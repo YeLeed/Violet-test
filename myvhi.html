@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MyVhi | Vhi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="assets/vhi.css">
+</head>
+<body>
+
+<header class="dash-header">
+  <div class="container">
+    <a class="wordmark" href="index.html">Vhi</a>
+    <nav>
+      <ul class="top-nav">
+        <li><a href="index.html">Health Insurance</a></li>
+        <li><a href="help.html">Help &amp; Support</a></li>
+        <li><a href="#" class="active">MyVhi</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button class="btn btn-outline" id="signout-btn">Sign out</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="dash-greeting">
+    <h1 id="greeting">Welcome back</h1>
+    <div class="member-no" id="member-no"></div>
+  </div>
+
+  <section class="ask-violet">
+    <div>
+      <h2>Ask Violet about your cover</h2>
+      <p>Answers use your policy and claims, not just the help pages.</p>
+    </div>
+    <div class="chip-grid">
+      <button class="q-chip" data-q="Has my claim been received and processed yet?">Has my claim been received and processed yet?</button>
+      <button class="q-chip" data-q="Why was my physio claim only partly paid?">Why was my physio claim only partly paid?</button>
+      <button class="q-chip" data-q="When does my policy renew and how do I pay?">When does my policy renew and how do I pay?</button>
+    </div>
+  </section>
+
+  <div class="dash-grid" id="dash-grid"></div>
+</div>
+
+<div class="presenter-bar" id="presenter-bar">
+  <label>Persona</label>
+  <select id="presenter-persona">
+    <option value="">Visitor</option>
+    <option value="aoife">Aoife</option>
+    <option value="ciaran">Ciarán</option>
+  </select>
+  <button id="presenter-new-conv">New conversation</button>
+  <button id="presenter-hide-messenger">Hide Messenger</button>
+</div>
+
+<script src="assets/app.js"></script>
+<script src="assets/help-drawer.js"></script>
+<script>
+(function () {
+  var vhi = window.vhiDemo;
+  var personaKey = vhi.currentPersona();
+  if (!personaKey || !vhi.PERSONAS[personaKey]) { location.href = 'index.html'; return; }
+
+  var grid = document.getElementById('dash-grid');
+
+  function card(id, title, bodyHtml, full) {
+    return '<section class="dash-card' + (full ? ' full' : '') + '" id="' + id + '"><h2>' + title + '</h2>' + bodyHtml + '</section>';
+  }
+  function errorCard(id, title) {
+    return card(id, title, '<div class="banner-error">We couldn\'t load your details right now. Refresh to try again.</div>');
+  }
+
+  function renderError() {
+    grid.innerHTML =
+      errorCard('policy-card', 'Your policy') +
+      errorCard('people-card', 'People on your policy') +
+      errorCard('claims-card', 'Claims') +
+      errorCard('payments-card', 'Payments') +
+      errorCard('card-card', 'Digital membership card') +
+      errorCard('docs-card', 'Documents') +
+      errorCard('manage-card', 'Manage your policy');
+  }
+
+  function renderPolicyCard(policy) {
+    var rows = '';
+    rows += '<div class="card-row"><span class="label">Plan</span><span class="value">' + policy.plan_name + '</span></div>';
+    rows += '<div class="card-row"><span class="label">Policy number</span><span class="value">' + policy.policy_number + '</span></div>';
+    rows += '<div class="card-row"><span class="label">Status</span><span class="value"><span class="chip chip-active">' + policy.status.charAt(0).toUpperCase() + policy.status.slice(1) + '</span></span></div>';
+    rows += '<div class="card-row"><span class="label">Next renewal</span><span class="value">' + vhi.longDate(policy.next_renewal_date) + '</span></div>';
+    if (policy.employer_paid && policy.employer_name) {
+      rows += '<div class="card-row"><span class="label">Employer</span><span class="value">' + policy.employer_name + '</span></div>';
+    }
+    if (policy.annual_excess_per_member_display) {
+      rows += '<div class="card-row"><span class="label">Annual excess per member</span><span class="value">' + policy.annual_excess_per_member_display + '</span></div>';
+    }
+    rows += '<p style="margin:14px 0 0;"><a href="#" class="btn-link">Table of Benefits &rarr;</a></p>';
+    return card('policy-card', 'Your policy', rows);
+  }
+
+  function renderPeopleCard(policy) {
+    var items = policy.people_on_policy.map(function (p) {
+      return '<li class="person-row"><span>' + p.name + '</span><span class="relationship">' + p.relationship + '</span></li>';
+    }).join('');
+    var body = '<ul class="people-list">' + items + '</ul>' +
+      '<div class="actions-list" style="margin-top:14px;"><button id="add-newborn-btn">Add a newborn</button></div>';
+    return card('people-card', 'People on your policy', body);
+  }
+
+  function renderClaimsCard(claims) {
+    var rows = claims.map(function (c) {
+      var note = c.status === 'returned' && c.returned_reason ? '<span class="returned-note">' + c.returned_reason + '</span>' : '';
+      return '<tr>' +
+        '<td>' + c.claim_reference + '</td>' +
+        '<td>' + c.type + note + '</td>' +
+        '<td>' + vhi.longDate(c.treatment_date) + '</td>' +
+        '<td>' + c.amount_claimed_display + '</td>' +
+        '<td><span class="chip chip-' + c.status + '">' + vhi.statusLabel(c.status) + '</span></td>' +
+        '<td>' + (c.amount_paid_display || '—') + '</td>' +
+        '</tr>';
+    }).join('');
+    var body = '<table class="dash-table"><thead><tr><th>Reference</th><th>Treatment</th><th>Date</th><th>Claimed</th><th>Status</th><th>Paid</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+      '<div class="actions-list" style="margin-top:16px;"><button id="snap-send-btn">Snap &amp; Send a claim</button></div>';
+    return card('claims-card', 'Claims', body, true);
+  }
+
+  function renderPaymentsCard(payments) {
+    var rows = '';
+    var banner = vhi.paymentBanner(payments.last_collection);
+    if (payments.method === 'employer_paid') {
+      rows += '<div class="card-row"><span class="label">Method</span><span class="value">Paid by employer</span></div>';
+      rows += '<div class="card-row"><span class="label">Paid by</span><span class="value">' + (window.__vhi_employer || '') + '</span></div>';
+    } else {
+      rows += '<div class="card-row"><span class="label">Method</span><span class="value">Direct debit</span></div>';
+      rows += '<div class="card-row"><span class="label">Premium</span><span class="value">' + payments.monthly_premium_display + ' / month</span></div>';
+      rows += '<div class="card-row"><span class="label">Account holder</span><span class="value">' + payments.account_holder + '</span></div>';
+      rows += '<div class="card-row"><span class="label">IBAN</span><span class="value">' + payments.iban_masked + '</span></div>';
+    }
+    var body = (banner ? '<div class="banner-failed"><div><strong>Payment unsuccessful</strong>' + banner + '</div><button id="update-bank-btn" class="btn btn-primary">Update bank details</button></div>' : '') + rows;
+    return card('payments-card', 'Payments', body);
+  }
+
+  function renderCardCard(member, policy, digital) {
+    var body = '<div class="membership-card">' +
+      '<div class="mc-brand">Vhi</div>' +
+      '<div class="mc-name">' + member.first_name + ' ' + member.last_name + '</div>' +
+      '<div class="mc-row"><div>Membership number<span>' + digital.membership_number + '</span></div><div>Valid to<span>' + vhi.longDate(digital.valid_to) + '</span></div></div>' +
+      '</div>';
+    return card('card-card', 'Digital membership card', body);
+  }
+
+  function renderDocsCard(docs) {
+    var items = docs.map(function (d) { return '<li>' + d + '</li>'; }).join('');
+    return card('docs-card', 'Documents', '<ul class="doc-list">' + items + '</ul>');
+  }
+
+  function renderManageCard() {
+    var body = '<div class="actions-list">' +
+      '<a href="#">Renewal &amp; plan options</a>' +
+      '<button id="cancel-btn">Cancel my policy</button>' +
+      '</div>';
+    return card('manage-card', 'Manage your policy', body);
+  }
+
+  function wireActions() {
+    var addNewborn = document.getElementById('add-newborn-btn');
+    if (addNewborn) addNewborn.addEventListener('click', function () { vhi.say('I want to add my newborn baby to my policy'); });
+    var snapSend = document.getElementById('snap-send-btn');
+    if (snapSend) snapSend.addEventListener('click', function () { vhi.say('I want to submit a claim'); });
+    var updateBank = document.getElementById('update-bank-btn');
+    if (updateBank) updateBank.addEventListener('click', function () { vhi.say('I need to update my bank details'); });
+    var cancelBtn = document.getElementById('cancel-btn');
+    if (cancelBtn) cancelBtn.addEventListener('click', function () { vhi.say('I want to cancel my policy'); });
+  }
+
+  function render(data) {
+    var m = data.member, p = data.policy, pay = data.payments;
+    document.getElementById('greeting').textContent = 'Welcome back, ' + m.first_name;
+    document.getElementById('member-no').textContent = 'Member number ' + m.member_id;
+    window.__vhi_employer = p.employer_name;
+    grid.innerHTML =
+      renderPolicyCard(p) +
+      renderPeopleCard(p) +
+      renderClaimsCard(data.claims) +
+      renderPaymentsCard(pay) +
+      renderCardCard(m, p, data.digital_card) +
+      renderDocsCard(data.documents) +
+      renderManageCard();
+    wireActions();
+  }
+
+  document.getElementById('greeting').textContent = 'Welcome back, ' + vhi.PERSONAS[personaKey].name.split(' ')[0];
+  fetch(vhi.memberUrl(personaKey))
+    .then(function (r) { if (!r.ok) throw new Error('bad status'); return r.json(); })
+    .then(render)
+    .catch(renderError);
+
+  document.querySelectorAll('.q-chip').forEach(function (btn) {
+    btn.addEventListener('click', function () { vhi.say(btn.dataset.q); });
+  });
+
+  document.getElementById('signout-btn').addEventListener('click', function () { vhi.signOut(); });
+
+  var bar = document.getElementById('presenter-bar');
+  document.getElementById('presenter-persona').value = personaKey;
+  document.getElementById('presenter-persona').addEventListener('change', function (e) {
+    var key = e.target.value || null;
+    if (key) { localStorage.setItem('vhi_persona', key); } else { localStorage.removeItem('vhi_persona'); }
+    vhi.reboot(key);
+    if (key) vhi.reloadClean(); else location.href = 'index.html';
+  });
+  document.getElementById('presenter-new-conv').addEventListener('click', function () {
+    if (window.Intercom) window.Intercom('shutdown');
+    document.cookie.split(';').forEach(function (c) {
+      var n = c.split('=')[0].trim();
+      if (n.indexOf('intercom-') === 0) document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    });
+    vhi.reloadClean();
+  });
+  document.getElementById('presenter-hide-messenger').addEventListener('click', function () {
+    if (window.Intercom) window.Intercom('hide');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'h') bar.classList.toggle('hidden');
+  });
+})();
+</script>
+</body>
+</html>

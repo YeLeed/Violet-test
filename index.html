@@ -1,55 +1,206 @@
 <!doctype html>
-<html>
-  <head>
-    <title>Fin ZD demo</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Health Insurance | Vhi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="assets/vhi.css">
+</head>
+<body>
 
-    <script>
-      function reset() {
-        const cookies = document.cookie.split(";");
-
-        for (let i = 0; i < cookies.length; i++) {
-
-            const cookie = cookies[i];
-
-            const eqPos = cookie.indexOf("=");
-
-            const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-
-            // Set the cookie's expiration date to a past date to delete it
-
-            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-
-        }
-
-        window.localStorage.clear();
-        window.sessionStorage.clear();
-        window.location.reload();
-
-      }
-    </script>
-  </head>
-  <body class="p-6 flex flex-col flex-1 items-center justify-center min-h-screen bg-cover" style="background-image: url('https://downloads.intercomcdn.com/i/o/1051523575/8c16c6bb97ae791131ead20c/blur.jpg')">
-    <div class="flex flex-col space-y-2 items-center">
-      <div>
-        <img src="https://static.intercomassets.com/assets/default-avatars/fin/128-6a5eabbb84cc2b038b2afc6698ca0a974faf7adc9ea9f0fb3c3e78ac12543bc5.png" height="50" width="50"  >
-      </div>
-      <button class="bg-black text-white p-2 m-2 rounded hover:bg-opacity-75" onclick="reset()">Reset</button>
+<header class="site-header">
+  <div class="container">
+    <a class="wordmark" href="index.html">Vhi</a>
+    <nav>
+      <ul class="top-nav">
+        <li><a href="index.html" class="active">Health Insurance</a></li>
+        <li><a href="#">Travel Insurance</a></li>
+        <li><a href="#">Dental</a></li>
+        <li><a href="help.html">Help &amp; Support</a></li>
+        <li><a href="#" id="nav-myvhi">MyVhi</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button class="btn btn-outline" id="signin-btn">Sign in to MyVhi</button>
+      <a class="btn btn-primary" href="#plans">Get a quote</a>
     </div>
-    <script>
-      window.intercomSettings = {
-        api_base: "https://api-iam.eu.intercom.io",
-        app_id: "twv9ulrn",
-      }
-    </script>
-    
-    
-    <script>
-      // We pre-filled your app ID in the widget URL: 'https://widget.intercom.io/widget/mw2u5h8i'
-      (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/mw2u5h8i';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
-    </script>
-    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=8e34671c-b79f-4163-8738-806e88691cefsf11"> </script>
-  </body>
+  </div>
+</header>
+
+<section class="hero hero-lead">
+  <div class="container">
+    <h1>Health insurance that's there when you need it</h1>
+    <p>Compare plans, check what's covered, and get your questions answered before you join — no account needed.</p>
+    <div class="hero-cta">
+      <a class="btn btn-light" href="#plans">Compare plans</a>
+      <button class="btn btn-ghost" id="ask-violet-btn">Ask Violet a question</button>
+    </div>
+    <div class="hero-note">Trusted by 1.2 million members</div>
+  </div>
+</section>
+
+<section class="tiles-section">
+  <div class="container">
+    <div class="tiles-grid tiles-3">
+      <div class="tile">
+        <div class="tile-icon">📱</div>
+        <h3>Claim from your phone</h3>
+        <p>Snap a photo of your receipt and send everyday claims through Snap &amp; Send in MyVhi or the Vhi App.</p>
+      </div>
+      <div class="tile">
+        <div class="tile-icon">→</div>
+        <h3>Switching is simple</h3>
+        <p>Waiting periods you've already served with another insurer carry over — just send us your previous policy number or a Confirmation of Cover letter.</p>
+      </div>
+      <div class="tile">
+        <div class="tile-icon">☎</div>
+        <h3>People, not just portals</h3>
+        <p>Member Care on 056 444 4444, Mon–Fri 8am–7pm and Sat 9am–3pm, with Violet online any time for quick answers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="plans" class="section plans-section">
+  <div class="container">
+    <h2>Popular plans</h2>
+    <p class="lede">Every plan below includes semi-private hospital cover. Excesses and benefits are indicative — the Table of Benefits for each plan has the full detail.</p>
+    <div class="plan-grid">
+      <article class="plan-card">
+        <span class="plan-badge">Individuals</span>
+        <h3>One Plan</h3>
+        <ul class="plan-points">
+        <li>Semi-private rooms in private hospitals</li>
+        <li>Semi-private and private rooms in public hospitals</li>
+        <li>€200 private hospital excess</li>
+        </ul>
+        <a class="btn btn-primary" href="#contact">Get a quote</a>
+      </article>
+      <article class="plan-card">
+        <span class="plan-badge">Individuals</span>
+        <h3>One+ Plan</h3>
+        <ul class="plan-points">
+        <li>Semi-private rooms in private hospitals</li>
+        <li>€150 private hospital excess</li>
+        <li>€125 excess per MRI scan</li>
+        </ul>
+        <a class="btn btn-primary" href="#contact">Get a quote</a>
+      </article>
+      <article class="plan-card">
+        <span class="plan-badge">Employer schemes</span>
+        <h3>Company Plan</h3>
+        <ul class="plan-points">
+        <li>Semi-private rooms in a wide range of private hospitals</li>
+        <li>€125 annual excess per member</li>
+        <li>Consultant consultations covered at 50%, up to €125 per visit</li>
+        </ul>
+        <a class="btn btn-primary" href="#contact">Get a quote</a>
+      </article>
+    </div>
+    <p class="small-print">Prices depend on who's covered and when you join. Lifetime Community Rating loadings may apply from age 35 if you haven't held private health insurance before.</p>
+  </div>
+</section>
+
+<section class="section faq-section">
+  <div class="container">
+    <h2>Questions people ask before they join</h2>
+    <p class="lede">Ask Violet — the answers come straight from Vhi's help content.</p>
+    <div class="chip-grid">
+      <button class="q-chip" data-q="I&#x27;m switching from another insurer. Will I have to serve waiting periods again?">I'm switching from another insurer. Will I have to serve waiting periods again?</button>
+      <button class="q-chip" data-q="What are the waiting periods for a new member?">What are the waiting periods for a new member?</button>
+      <button class="q-chip" data-q="Do I get tax relief on my health insurance premium?">Do I get tax relief on my health insurance premium?</button>
+      <button class="q-chip" data-q="What is Lifetime Community Rating and does it affect my price?">What is Lifetime Community Rating and does it affect my price?</button>
+      <button class="q-chip" data-q="How do I make a claim for a physio visit?">How do I make a claim for a physio visit?</button>
+      <button class="q-chip" data-q="We&#x27;re expecting a baby. Can I add a newborn to a policy?">We're expecting a baby. Can I add a newborn to a policy?</button>
+      <button class="q-chip" data-q="Can I pay monthly by direct debit?">Can I pay monthly by direct debit?</button>
+      <button class="q-chip" data-q="Is there a cooling-off period if I change my mind?">Is there a cooling-off period if I change my mind?</button>
+    </div>
+  </div>
+</section>
+
+<section class="member-band">
+  <div class="container">
+    <h2>Already a member?</h2>
+    <p>Sign in to MyVhi to see your policy, claims and payments — and ask Violet about your own cover, not just the general rules.</p>
+    <button class="btn btn-light" id="member-signin-btn">Sign in to MyVhi</button>
+  </div>
+</section>
+
+<section id="contact" class="section">
+  <div class="container">
+    <div class="contact-block">
+      <div>
+        <h2 style="margin:0 0 4px;">Talk to Member Care</h2>
+        <div class="hours">Mon–Fri 8am–7pm, Sat 9am–3pm</div>
+      </div>
+      <div class="phone">056 444 4444</div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">Vhi Healthcare — demo site, not the live vhi.ie</div>
+</footer>
+
+<div class="modal-overlay" id="signin-modal">
+  <div class="modal">
+    <h3>Sign in to MyVhi</h3>
+    <p>Choose a demo member to sign in as</p>
+    <button class="persona-btn" data-persona="aoife">Aoife Murphy<span>One Plan Family · VHI-MEM-100482</span></button>
+    <button class="persona-btn" data-persona="ciaran">Ciarán Walsh<span>Company Plan · VHI-MEM-200917</span></button>
+    <button class="modal-close" id="modal-close">Cancel</button>
+  </div>
+</div>
+
+<div class="presenter-bar" id="presenter-bar">
+  <label>Persona</label>
+  <select id="presenter-persona">
+    <option value="">Visitor</option>
+    <option value="aoife">Aoife</option>
+    <option value="ciaran">Ciarán</option>
+  </select>
+  <button id="presenter-new-conv">New conversation</button>
+  <button id="presenter-hide-messenger">Hide Messenger</button>
+</div>
+
+<script src="assets/app.js"></script>
+<script src="assets/help-drawer.js"></script>
+<script>
+  var modal = document.getElementById('signin-modal');
+  document.getElementById('signin-btn').addEventListener('click', function () { modal.classList.add('open'); });
+  document.getElementById('member-signin-btn').addEventListener('click', function () { modal.classList.add('open'); });
+  document.getElementById('nav-myvhi').addEventListener('click', function (e) { e.preventDefault(); modal.classList.add('open'); });
+  document.getElementById('modal-close').addEventListener('click', function () { modal.classList.remove('open'); });
+  modal.querySelectorAll('.persona-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () { window.vhiDemo.signIn(btn.dataset.persona); });
+  });
+
+  document.querySelectorAll('.q-chip').forEach(function (btn) {
+    btn.addEventListener('click', function () { window.vhiDemo.say(btn.dataset.q); });
+  });
+  document.getElementById('ask-violet-btn').addEventListener('click', function () { window.Intercom('show'); });
+
+  var bar = document.getElementById('presenter-bar');
+  document.getElementById('presenter-persona').addEventListener('change', function (e) {
+    var key = e.target.value || null;
+    if (key) { localStorage.setItem('vhi_persona', key); } else { localStorage.removeItem('vhi_persona'); }
+    window.vhiDemo.reboot(key);
+    if (key) location.href = 'myvhi.html'; else window.vhiDemo.reloadClean();
+  });
+  document.getElementById('presenter-new-conv').addEventListener('click', function () {
+    if (window.Intercom) window.Intercom('shutdown');
+    document.cookie.split(';').forEach(function (c) {
+      var n = c.split('=')[0].trim();
+      if (n.indexOf('intercom-') === 0) document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    });
+    window.vhiDemo.reloadClean();
+  });
+  document.getElementById('presenter-hide-messenger').addEventListener('click', function () {
+    if (window.Intercom) window.Intercom('hide');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'h') bar.classList.toggle('hidden');
+  });
+</script>
+</body>
 </html>

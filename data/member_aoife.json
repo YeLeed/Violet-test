@@ -1,0 +1,52 @@
+{
+  "lookup": {"status": "found", "matched_on": "email"},
+  "member": {
+    "member_id": "VHI-MEM-100482",
+    "first_name": "Aoife",
+    "last_name": "Murphy",
+    "email": "aoife.murphy@example.ie",
+    "phone": "+353 87 412 7730",
+    "date_of_birth": "1988-04-17",
+    "is_policyholder": true,
+    "registered_vulnerable": false
+  },
+  "policy": {
+    "policy_number": "VHI-4471-2093",
+    "plan_name": "One Plan Family",
+    "status": "active",
+    "employer_paid": false,
+    "employer_name": null,
+    "start_date": "2019-01-31",
+    "last_renewal_date": "2026-01-31",
+    "next_renewal_date": "2027-01-31",
+    "days_since_last_renewal": 242,
+    "within_cooling_off_from_renewal": false,
+    "people_on_policy": [
+      {"name": "Aoife Murphy", "relationship": "policyholder", "date_of_birth": "1988-04-17"},
+      {"name": "Darragh Murphy", "relationship": "partner", "date_of_birth": "1986-11-02"},
+      {"name": "Saoirse Murphy", "relationship": "child", "date_of_birth": "2020-06-09"}
+    ]
+  },
+  "payments": {
+    "method": "direct_debit",
+    "frequency": "monthly",
+    "monthly_premium_display": "€356.20",
+    "account_holder": "Aoife Murphy",
+    "iban_masked": "IE** **** **** **** **56 78",
+    "last_collection": {
+      "due_date": "2026-09-22",
+      "amount_display": "€356.20",
+      "status": "failed",
+      "bank_reason": "Refer to payer",
+      "bank_notified_vhi_on": "2026-09-24",
+      "resubmission_date": "2026-10-07"
+    }
+  },
+  "claims": [
+    {"claim_reference": "CLM-2026-118204", "type": "Physiotherapy", "treatment_date": "2026-08-12", "practitioner": "Liffey Physio Clinic", "amount_claimed_display": "€60.00", "status": "paid", "amount_paid_display": "€30.00", "paid_on": "2026-08-20", "statement_available": true},
+    {"claim_reference": "CLM-2026-119577", "type": "Consultant consultation", "treatment_date": "2026-09-03", "practitioner": null, "amount_claimed_display": "€150.00", "status": "returned", "returned_reason": "The receipt does not show the practitioner's name and details.", "what_to_do": "Resubmit through Snap & Send with a receipt that shows the practitioner's name and details, or ask the practitioner for an updated receipt."},
+    {"claim_reference": "CLM-2026-120931", "type": "GP visit", "treatment_date": "2026-09-19", "practitioner": "Dr. Nuala Byrne, Rathmines Medical Centre", "amount_claimed_display": "€65.00", "status": "in_review", "submitted_on": "2026-09-22", "statement_available": false}
+  ],
+  "documents": ["Policy certificate 2026", "Table of Benefits — One Plan Family", "Benefit claim statement CLM-2026-118204"],
+  "digital_card": {"membership_number": "100482-01", "valid_to": "2027-01-31"}
+}

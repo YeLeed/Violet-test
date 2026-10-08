@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Help &amp; Support | Vhi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="assets/vhi.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="wordmark" href="index.html">Vhi</a>
+    <nav>
+      <ul class="top-nav">
+        <li><a href="index.html">Health Insurance</a></li>
+        <li><a href="#">Travel Insurance</a></li>
+        <li><a href="#">Dental</a></li>
+        <li><a href="help.html" class="active">Help &amp; Support</a></li>
+        <li><a href="#" id="nav-myvhi">MyVhi</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button class="btn btn-primary" id="signin-btn">Sign in to MyVhi</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <h1>How can we help?</h1>
+    <p>Search our help articles, or browse the topics below to find what you need — claims, payments, policy changes and more.</p>
+    <div class="search-bar">
+      <input type="text" placeholder="Search Help &amp; Support">
+      <button>Search</button>
+    </div>
+  </div>
+</section>
+
+<section class="tiles-section">
+  <div class="container">
+    <div class="tiles-grid">
+      <a class="tile" href="#">
+        <div class="tile-icon">€</div>
+        <h3>Claims</h3>
+        <p>Submit a claim with Snap &amp; Send, check claim status and view statements.</p>
+      </a>
+      <a class="tile" href="#">
+        <div class="tile-icon">💳</div>
+        <h3>Payments</h3>
+        <p>Update your bank details, view your premium and payment history.</p>
+      </a>
+      <a class="tile" href="#">
+        <div class="tile-icon">✎</div>
+        <h3>Policy changes</h3>
+        <p>Add a newborn, update your details or make changes to your cover.</p>
+      </a>
+      <a class="tile" href="#">
+        <div class="tile-icon">↻</div>
+        <h3>Renewals</h3>
+        <p>Understand your renewal date, plan options and cooling-off period.</p>
+      </a>
+      <a class="tile" href="#">
+        <div class="tile-icon">📱</div>
+        <h3>MyVhi &amp; the Vhi App</h3>
+        <p>Manage your policy, claims and documents online or on the go.</p>
+      </a>
+      <a class="tile" href="#">
+        <div class="tile-icon">→</div>
+        <h3>Switching to Vhi</h3>
+        <p>Everything you need to know about moving your health insurance to Vhi.</p>
+      </a>
+      <a class="tile" href="#">
+        <div class="tile-icon">☎</div>
+        <h3>Contact us</h3>
+        <p>Speak to our Member Care team by phone, chat or in person.</p>
+      </a>
+      <a class="tile" href="#">
+        <div class="tile-icon">i</div>
+        <h3>About your cover</h3>
+        <p>Table of Benefits, excess and what's included in your plan.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="contact-block">
+      <div>
+        <h2 style="margin:0 0 4px;">Talk to Member Care</h2>
+        <div class="hours">Mon–Fri 8am–7pm, Sat 9am–3pm</div>
+      </div>
+      <div class="phone">056 444 4444</div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">Vhi Healthcare — demo site, not the live vhi.ie</div>
+</footer>
+
+<div class="modal-overlay" id="signin-modal">
+  <div class="modal">
+    <h3>Sign in to MyVhi</h3>
+    <p>Choose a demo member to sign in as</p>
+    <button class="persona-btn" data-persona="aoife">Aoife Murphy<span>One Plan Family · VHI-MEM-100482</span></button>
+    <button class="persona-btn" data-persona="ciaran">Ciarán Walsh<span>Company Plan · VHI-MEM-200917</span></button>
+    <button class="modal-close" id="modal-close">Cancel</button>
+  </div>
+</div>
+
+<div class="presenter-bar" id="presenter-bar">
+  <label>Persona</label>
+  <select id="presenter-persona">
+    <option value="">Visitor</option>
+    <option value="aoife">Aoife</option>
+    <option value="ciaran">Ciarán</option>
+  </select>
+  <button id="presenter-new-conv">New conversation</button>
+  <button id="presenter-hide-messenger">Hide Messenger</button>
+</div>
+
+<script src="assets/app.js"></script>
+<script src="assets/help-drawer.js"></script>
+<script>
+  var modal = document.getElementById('signin-modal');
+  document.getElementById('signin-btn').addEventListener('click', function () { modal.classList.add('open'); });
+  document.getElementById('nav-myvhi').addEventListener('click', function (e) { e.preventDefault(); modal.classList.add('open'); });
+  document.getElementById('modal-close').addEventListener('click', function () { modal.classList.remove('open'); });
+  modal.querySelectorAll('.persona-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () { window.vhiDemo.signIn(btn.dataset.persona); });
+  });
+
+  var bar = document.getElementById('presenter-bar');
+  document.getElementById('presenter-persona').addEventListener('change', function (e) {
+    var key = e.target.value || null;
+    if (key) { localStorage.setItem('vhi_persona', key); } else { localStorage.removeItem('vhi_persona'); }
+    window.vhiDemo.reboot(key);
+    if (key) location.href = 'myvhi.html'; else window.vhiDemo.reloadClean();
+  });
+  document.getElementById('presenter-new-conv').addEventListener('click', function () {
+    if (window.Intercom) window.Intercom('shutdown');
+    document.cookie.split(';').forEach(function (c) {
+      var n = c.split('=')[0].trim();
+      if (n.indexOf('intercom-') === 0) document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    });
+    window.vhiDemo.reloadClean();
+  });
+  document.getElementById('presenter-hide-messenger').addEventListener('click', function () {
+    if (window.Intercom) window.Intercom('hide');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'h') bar.classList.toggle('hidden');
+  });
+</script>
+</body>
+</html>

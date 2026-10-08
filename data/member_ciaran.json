@@ -1,0 +1,42 @@
+{
+  "lookup": {"status": "found", "matched_on": "email"},
+  "member": {
+    "member_id": "VHI-MEM-200917",
+    "first_name": "Ciarán",
+    "last_name": "Walsh",
+    "email": "ciaran.walsh@example.ie",
+    "phone": "+353 86 903 1184",
+    "date_of_birth": "1991-02-23",
+    "is_policyholder": true,
+    "registered_vulnerable": false
+  },
+  "policy": {
+    "policy_number": "VHI-8820-5531",
+    "plan_name": "Company Plan",
+    "status": "active",
+    "employer_paid": true,
+    "employer_name": "Kestrel Engineering Ltd",
+    "annual_excess_per_member_display": "€125",
+    "start_date": "2024-09-21",
+    "last_renewal_date": "2026-09-21",
+    "next_renewal_date": "2027-09-21",
+    "days_since_last_renewal": 9,
+    "within_cooling_off_from_renewal": true,
+    "people_on_policy": [
+      {"name": "Ciarán Walsh", "relationship": "policyholder", "date_of_birth": "1991-02-23"}
+    ]
+  },
+  "payments": {
+    "method": "employer_paid",
+    "frequency": "annual",
+    "monthly_premium_display": null,
+    "account_holder": null,
+    "iban_masked": null,
+    "last_collection": null
+  },
+  "claims": [
+    {"claim_reference": "CLM-2026-117350", "type": "Physiotherapy", "treatment_date": "2026-07-30", "practitioner": "Grand Canal Physio", "amount_claimed_display": "€70.00", "status": "paid", "amount_paid_display": "€35.00", "paid_on": "2026-08-07", "statement_available": true}
+  ],
+  "documents": ["Policy certificate 2026", "Table of Benefits — Company Plan"],
+  "digital_card": {"membership_number": "200917-01", "valid_to": "2027-09-21"}
+}
