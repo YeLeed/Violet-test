@@ -38,10 +38,17 @@
   }
   function reloadClean() { location.replace(withoutPersonaParam(location.href)); }
 
+  // On real hostnames Intercom sets its cookies with a Domain attribute, which a host-only delete never matches.
   function clearIntercomCookies() {
+    var parts = location.hostname.split('.');
+    var domains = [''];
+    for (var i = 0; i < parts.length - 1; i++) domains.push(parts.slice(i).join('.'));
     document.cookie.split(';').forEach(function (c) {
       var n = c.split('=')[0].trim();
-      if (n.indexOf('intercom-') === 0) document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      if (n.indexOf('intercom-') !== 0) return;
+      domains.forEach(function (d) {
+        document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + (d ? '; domain=' + d : '');
+      });
     });
   }
   function reboot(key) {
@@ -79,7 +86,7 @@
   window.vhiDemo = { PERSONAS: PERSONAS, settingsFor: settingsFor, statusLabel: statusLabel, paymentBanner: paymentBanner,
     memberUrl: memberUrl, currentPersona: currentPersona, isPortal: isPortal, signIn: signIn, signOut: signOut, say: say, reboot: reboot,
     longDate: longDate, parsePersonaParam: parsePersonaParam, withoutPersonaParam: withoutPersonaParam,
-    reloadClean: reloadClean };
+    reloadClean: reloadClean, clearIntercomCookies: clearIntercomCookies };
 
   if (window.VHI_TEST) return;
 

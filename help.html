@@ -141,10 +141,7 @@
   });
   document.getElementById('presenter-new-conv').addEventListener('click', function () {
     if (window.Intercom) window.Intercom('shutdown');
-    document.cookie.split(';').forEach(function (c) {
-      var n = c.split('=')[0].trim();
-      if (n.indexOf('intercom-') === 0) document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
-    });
+    window.vhiDemo.clearIntercomCookies();
     window.vhiDemo.reloadClean();
   });
   document.getElementById('presenter-hide-messenger').addEventListener('click', function () {
